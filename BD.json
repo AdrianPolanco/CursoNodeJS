@@ -1,0 +1,64 @@
+{
+    "users": [
+        {
+            "_id": "64d955196e5206586896c953",
+            "index": 0,
+            "guid": "76aa307d-f3f7-4450-96ba-5046b3b119f7",
+            "isActive": true,
+            "balance": "$7,777.00",
+            "picture": "http://placehold.it/32x32",
+            "age": 21,
+            "role": "Admin",
+            "eyeColor": "green",
+            "name": "Adrian Saul Polanco Ferrer",
+            "gender": "male",
+            "company": "CONCILITY",
+            "email": "adferrer0611@gmail.com",
+            "password": "PruebaNodeJS",
+            "friends": [
+                {
+                    "id": 0,
+                    "name": "Elmer Montilla"
+                },
+                {
+                    "id": 1,
+                    "name": "Galenka Mijailova Lopez"
+                }
+            ],
+            "future_couple": {
+                "id": "64d95519569e62918f826f9a",
+                "name": "Yari Mancebo"
+            }
+        },
+        {
+            "_id": "64d95519569e62918f826f9a",
+            "index": 1,
+            "guid": "012e249b-3e7d-4ec3-be25-6cda3be328a0",
+            "isActive": true,
+            "balance": "$7,777.00",
+            "picture": "http://placehold.it/32x32",
+            "age": 18,
+            "role": "User",
+            "eyeColor": "blue",
+            "name": "Yari Mancebo",
+            "gender": "female",
+            "company": "COMTOURS",
+            "email": "ymancebo@comtours.com",
+            "password": "prueba1234",
+            "friends": [
+                {
+                    "id": 0,
+                    "name": "Elmer Montilla"
+                },
+                {
+                    "id": 1,
+                    "name": "Yanibelkis Rodriguez"
+                }
+            ],
+            "future_couple": {
+                "id": "64d955196e5206586896c953",
+                "name": "Adrian Saul Polanco Ferrer"
+            }
+        }
+    ]
+}
