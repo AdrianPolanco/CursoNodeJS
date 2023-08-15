@@ -32,7 +32,7 @@ class AuthAPI {
             UsersRoutes,
             PublicRoutes,
         } = this;
-        const { PORT, ROUNDS } = process.env;
+        const { PORT } = process.env;
         app.use(cors());
         app.use(express.json());
         app.use(PublicRoutes);
@@ -73,14 +73,18 @@ class AuthAPI {
                         "Tu solicitud es incorrecta, se requiere la propiedad password en el cuerpo de la solicitud",
                 });
 
-            const jsonFile = fs.readFileSync("./BD.json", { encoding: "utf8" });
+            const jsonFile = fs.readFileSync("./BD.json", {
+                encoding: "utf8",
+            });
 
             const jsonContent = JSON.parse(jsonFile);
             const { users } = jsonContent;
             const id = uuid.v4();
             //const password = await bcrypt.hash(req.body.password, ROUNDS);
 
-            console.log(`Id generado: ${id}, Password hasheada: ${ROUNDS}`);
+            console.log(
+                `Id generado: ${id}, Password hasheada: ${ROUNDS}`
+            );
         });
     }
 }
