@@ -59,6 +59,60 @@
                 "id": "64d955196e5206586896c953",
                 "name": "Adrian Saul Polanco Ferrer"
             }
+        },
+        {
+            "_id": "29098826-f36b-4ad4-b81f-9e970959ad53",
+            "index": 2,
+            "guid": "4ea63ce2-873e-4940-8bcb-fa72b979d789",
+            "isActive": true,
+            "balance": "$1,370.93",
+            "picture": "http://placehold.it/32x32",
+            "age": 24,
+            "eyeColor": "brown",
+            "name": "Betty Jacobson",
+            "gender": "female",
+            "company": "APPLIDEC",
+            "email": "bettyjacobson@applidec.com",
+            "password": "$2b$10$2SCNVSzwgvBDdX5V4RvUO.PJn6iW8VEvnRBrISIt9kyuIREGXRfCS",
+            "friends": [
+                {
+                    "id": 0,
+                    "name": "Rivers Donaldson"
+                },
+                {
+                    "id": 1,
+                    "name": "Small Vang"
+                },
+                {
+                    "id": 2,
+                    "name": "Bass Daniels"
+                }
+            ]
+        },
+        {
+            "_id": "cf217eff-c27a-41a1-9c48-6ca765e6dead",
+            "index": 3,
+            "guid": "4ea63ce2-873e-4940-8bcb-fa72b979d789",
+            "isActive": true,
+            "balance": "$2400.93",
+            "picture": "http://placehold.it/32x32",
+            "age": 19,
+            "eyeColor": "brown",
+            "name": "Elmer Montilla",
+            "gender": "male",
+            "company": "APPLIDEC",
+            "email": "elmerjoelmontilla@rd.do",
+            "password": "$2b$10$8CYo1FREHzrOa1maYbeHhOU4OQP7.GdQ.OPPZ0YkUznoJmdaciolO",
+            "friends": [
+                {
+                    "id": 0,
+                    "name": "Yari Mancebo"
+                },
+                {
+                    "id": 1,
+                    "name": "Adrian Saul Polanco Ferrer"
+                }
+            ]
         }
     ]
 }
