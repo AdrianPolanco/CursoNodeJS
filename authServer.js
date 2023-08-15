@@ -4,9 +4,10 @@ const corsPackage = require("cors");
 const jsonwebtoken = require("jsonwebtoken");
 const uuidPackage = require("uuid");
 const dotenv = require("dotenv");
-const BD = require("./BD");
 const fs = require("fs");
-
+const { type } = require("os");
+dotenv.config();
+const { PORT, ROUNDS } = process.env;
 class AuthAPI {
     constructor() {
         this.app = express();
@@ -14,11 +15,11 @@ class AuthAPI {
         this.cors = corsPackage;
         this.jwt = jsonwebtoken;
         this.uuid = uuidPackage;
+        this.jsonRoute = `${__dirname}\\BD.json`
         this.AdminRoutes = express.Router();
         this.UsersRoutes = express.Router();
         this.PublicRoutes = express.Router();
-        this.PublicRouter();
-        dotenv.config();
+        this.PublicRouter();  
     }
 
     Init() {
@@ -32,7 +33,7 @@ class AuthAPI {
             UsersRoutes,
             PublicRoutes,
         } = this;
-        const { PORT, ROUNDS } = process.env;
+
         app.use(cors());
         app.use(express.json());
         app.use(PublicRoutes);
@@ -41,21 +42,32 @@ class AuthAPI {
         });
     }
 
-    PublicRouter() {
-        const { PublicRoutes, uuid, bcrypt } = this;
-        const { ROUNDS } = process.env;
-        PublicRoutes.get("/numero-usuarios", (req, res, next) => {
-            const numUsuarios = BD.length;
+    ReadJSON(route){
+        const jsonFile = fs.readFileSync(route, { encoding: "utf8" });
+        const jsonContent = JSON.parse(jsonFile);
+        return jsonContent
+    }
 
-            res.status(200).json({
-                status: "Succeed",
-                code: 200,
-                usuariosRegistrados: numUsuarios,
-            });
-        });
+    WriteJSON(route, content){
+        const jsonString = JSON.stringify(content, null, 4)
+        fs.writeFile(route, jsonString, "utf8", () =>{
+            try {
+                console.log("Cambios guardados exitosamente")
+            } catch (error) {
+                console.log(error)
+                return res.status(500).json({
+                    status: "Internal Server Error",
+                    code: 500,
+                    success: false,
+                    message: "No se pudo completar la operacion exitosamente",
+                    error
+                })
+            }
+        })
+    }
 
-        PublicRoutes.post("/crear-usuario", async (req, res, next) => {
-            if (!req.body.email)
+    EmailPassword(req, res, next){
+        if (!req.body.email)
                 return res.status(400).json({
                     status: "Bad request",
                     code: 400,
@@ -73,14 +85,45 @@ class AuthAPI {
                         "Tu solicitud es incorrecta, se requiere la propiedad password en el cuerpo de la solicitud",
                 });
 
-            const jsonFile = fs.readFileSync("./BD.json", { encoding: "utf8" });
+            next()
+    }
 
-            const jsonContent = JSON.parse(jsonFile);
+    PublicRouter() {
+        const { PublicRoutes, uuid, bcrypt, jsonRoute, ReadJSON, WriteJSON, EmailPassword } = this;
+        //Consulta el numero de usuarios actual en el BD.json
+        PublicRoutes.get("/numero-usuarios", (req, res, next) => {
+            const BD = ReadJSON(jsonRoute).users
+            const numUsuarios = BD.length;
+
+            res.status(200).json({
+                status: "Succeed",
+                code: 200,
+                usuariosRegistrados: numUsuarios,
+            });
+        });
+        //Agrega un nuevo usuario al BD.json
+        PublicRoutes.post("/crear-usuario", EmailPassword, async (req, res, next) => {
+            
+            //Leyendo, convirtiendo y manipulando el JSON
+            const jsonContent = ReadJSON(jsonRoute)
             const { users } = jsonContent;
             const id = uuid.v4();
-            //const password = await bcrypt.hash(req.body.password, ROUNDS);
+            const hashedPassword = await bcrypt.hash(req.body.password, Number(ROUNDS))
+            req.body.password = hashedPassword
+            const index = users.length
 
-            console.log(`Id generado: ${id}, Password hasheada: ${ROUNDS}`);
+            //Creando el nuevo objeto, agregandolo al objeto y convirtiendolo de vuelta a JSON
+            const createdResource = {_id: id, index, ...req.body}
+            users.push(createdResource)
+            WriteJSON(jsonRoute, jsonContent)
+
+            //Dando la respuesta exitosa
+            res.status(201).json({
+                status: "Succeed",
+                code: 201,
+                message: "Recurso creado correctamente",
+                created__Resource: createdResource
+            })
         });
     }
 }
