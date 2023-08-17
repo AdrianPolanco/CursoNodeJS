@@ -25,6 +25,7 @@
                     "name": "Galenka Mijailova Lopez"
                 }
             ],
+            "tasks": [],
             "future_couple": {
                 "id": "64d95519569e62918f826f9a",
                 "name": "Yari Mancebo"
@@ -55,6 +56,7 @@
                     "name": "Yanibelkis Rodriguez"
                 }
             ],
+            "tasks": [],
             "future_couple": {
                 "id": "64d955196e5206586896c953",
                 "name": "Adrian Saul Polanco Ferrer"
@@ -87,10 +89,11 @@
                     "id": 2,
                     "name": "Bass Daniels"
                 }
-            ]
+            ],
+            "tasks": []
         },
         {
-            "_id": "cf217eff-c27a-41a1-9c48-6ca765e6dead",
+            "_id": "244bc6c7-9974-4b26-9257-e763b4a753ec",
             "index": 3,
             "guid": "4ea63ce2-873e-4940-8bcb-fa72b979d789",
             "isActive": true,
@@ -102,7 +105,8 @@
             "gender": "male",
             "company": "APPLIDEC",
             "email": "elmerjoelmontilla@rd.do",
-            "password": "$2b$10$8CYo1FREHzrOa1maYbeHhOU4OQP7.GdQ.OPPZ0YkUznoJmdaciolO",
+            "password": "$2b$10$V20mOHWnKhYkxwDc.nw11ur3STNL/lkqdhVWotucQmeECsmWd9oVW",
+            "role": "User",
             "friends": [
                 {
                     "id": 0,
@@ -111,6 +115,16 @@
                 {
                     "id": 1,
                     "name": "Adrian Saul Polanco Ferrer"
+                }
+            ],
+            "tasks": [
+                {
+                    "taskId": "193977f0-3cc3-11ee-b354-0f2c690054e0",
+                    "taskTitle": "Aprender Desarrollo Backend",
+                    "taskBody": "Aprender NodeJS y C#",
+                    "taskPriority": "Alta",
+                    "taskStatus": "Activa",
+                    "creation": "agosto 17º 2023, 1:58:30 am"
                 }
             ]
         }
