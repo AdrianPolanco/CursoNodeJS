@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    </head>
+    <body>
+        <button id="boton">Presiona</button>
+
+        <script type="module">
+            document.querySelector("#boton").addEventListener("click", () => {
+                axios
+                    .get("http://localhost:3000/api/public/numero-usuarios")
+                    .then((response) => {
+                        console.log("Respuesta del servidor:", response.data);
+                    })
+                    .catch((error) => {
+                        console.error(
+                            "Error al realizar la solicitud:",
+                            error.message
+                        );
+                    });
+            });
+        </script>
+    </body>
+</html>

@@ -20,15 +20,22 @@ class AuthAPI {
         this.PublicRoutes = express.Router();
         this.PublicRouter();
         this.UserRouter();
+        this.AdminRouter();
     }
 
     Init() {
-        const { app, UsersRoutes, PublicRoutes } = this;
-
-        app.use(cors());
+        const { app, UsersRoutes, PublicRoutes, AdminRoutes } = this;
+        //Configurando la politica CORS
+        app.use(
+            cors({
+                origin: "http://127.0.0.1:55299",
+                optionsSuccessStatus: 200,
+            })
+        );
         app.use(express.json());
-        app.use(PublicRoutes);
-        app.use(UsersRoutes);
+        app.use("/api/public", PublicRoutes);
+        app.use("/api/user", UsersRoutes);
+        app.use("/api/admin", AdminRoutes);
         app.listen(PORT, () => {
             console.log(`Servidor corriendo en el puerto ${PORT}`);
         });
@@ -85,7 +92,11 @@ class AuthAPI {
     }
 
     CheckRole(req, res, next) {
-        if (req.body.role.toLowerCase() !== "user" && "admin")
+        console.log(req.body.role.toLowerCase());
+        if (
+            req.body.role.toLowerCase() !== "user" &&
+            req.body.role.toLowerCase() !== "admin"
+        )
             return res.status(400).json({
                 status: "Bad request",
                 code: 400,
@@ -142,7 +153,7 @@ class AuthAPI {
             jsonFile,
         } = this;
         //Consulta el numero de usuarios actual en el BD.json
-        PublicRoutes.get("/numero-usuarios", (res) => {
+        PublicRoutes.get("/numero-usuarios", (req, res) => {
             const BD = jsonFile.users;
             const numUsuarios = BD.length;
 
@@ -376,6 +387,48 @@ class AuthAPI {
                     status: "OK",
                     code: 200,
                     message: "Tarea eliminada exitosamente",
+                });
+            }
+        );
+    }
+
+    AdminRouter() {
+        const {
+            AdminRoutes,
+            jsonFile,
+            WriteJSON,
+            CheckRole,
+            CheckToken,
+            jsonRoute,
+        } = this;
+
+        AdminRoutes.delete(
+            "/eliminar-usuario/:id",
+            CheckToken,
+            CheckRole,
+            (req, res) => {
+                if (req.body.role.toLowerCase() !== "admin")
+                    return res.status(403).json({
+                        status: "No autorizado",
+                        code: 403,
+                        message:
+                            "Tu no estas autorizado para realizar esta operacion",
+                    });
+
+                const id = req.params.id;
+                const jsonContent = jsonFile;
+                const users = jsonContent.users;
+
+                const newUsers = users.filter((user) => user._id !== id);
+
+                jsonContent.users = [...newUsers];
+
+                WriteJSON(jsonContent, jsonRoute);
+
+                res.status(200).json({
+                    status: "OK",
+                    code: 200,
+                    message: "Usuario borrado exitosamente",
                 });
             }
         );

@@ -1,37 +1,6 @@
 {
     "users": [
         {
-            "_id": "64d955196e5206586896c953",
-            "index": 0,
-            "guid": "76aa307d-f3f7-4450-96ba-5046b3b119f7",
-            "isActive": true,
-            "balance": "$7,777.00",
-            "picture": "http://placehold.it/32x32",
-            "age": 21,
-            "role": "Admin",
-            "eyeColor": "green",
-            "name": "Adrian Saul Polanco Ferrer",
-            "gender": "male",
-            "company": "CONCILITY",
-            "email": "adferrer0611@gmail.com",
-            "password": "PruebaNodeJS",
-            "friends": [
-                {
-                    "id": 0,
-                    "name": "Elmer Montilla"
-                },
-                {
-                    "id": 1,
-                    "name": "Galenka Mijailova Lopez"
-                }
-            ],
-            "tasks": [],
-            "future_couple": {
-                "id": "64d95519569e62918f826f9a",
-                "name": "Yari Mancebo"
-            }
-        },
-        {
             "_id": "64d95519569e62918f826f9a",
             "index": 1,
             "guid": "012e249b-3e7d-4ec3-be25-6cda3be328a0",
@@ -63,36 +32,6 @@
             }
         },
         {
-            "_id": "29098826-f36b-4ad4-b81f-9e970959ad53",
-            "index": 2,
-            "guid": "4ea63ce2-873e-4940-8bcb-fa72b979d789",
-            "isActive": true,
-            "balance": "$1,370.93",
-            "picture": "http://placehold.it/32x32",
-            "age": 24,
-            "eyeColor": "brown",
-            "name": "Betty Jacobson",
-            "gender": "female",
-            "company": "APPLIDEC",
-            "email": "bettyjacobson@applidec.com",
-            "password": "$2b$10$2SCNVSzwgvBDdX5V4RvUO.PJn6iW8VEvnRBrISIt9kyuIREGXRfCS",
-            "friends": [
-                {
-                    "id": 0,
-                    "name": "Rivers Donaldson"
-                },
-                {
-                    "id": 1,
-                    "name": "Small Vang"
-                },
-                {
-                    "id": 2,
-                    "name": "Bass Daniels"
-                }
-            ],
-            "tasks": []
-        },
-        {
             "_id": "244bc6c7-9974-4b26-9257-e763b4a753ec",
             "index": 3,
             "guid": "4ea63ce2-873e-4940-8bcb-fa72b979d789",
@@ -106,7 +45,7 @@
             "company": "APPLIDEC",
             "email": "elmerjoelmontilla@rd.do",
             "password": "$2b$10$V20mOHWnKhYkxwDc.nw11ur3STNL/lkqdhVWotucQmeECsmWd9oVW",
-            "role": "User",
+            "role": "Admin",
             "friends": [
                 {
                     "id": 0,
