@@ -120,11 +120,12 @@
             "tasks": [
                 {
                     "taskId": "193977f0-3cc3-11ee-b354-0f2c690054e0",
-                    "taskTitle": "Aprender Desarrollo Backend",
-                    "taskBody": "Aprender NodeJS y C#",
-                    "taskPriority": "Alta",
-                    "taskStatus": "Activa",
-                    "creation": "agosto 17º 2023, 1:58:30 am"
+                    "taskTitle": "Aprender a virtualizar",
+                    "taskBody": "Aprender Docker",
+                    "taskStatus": "Inactiva",
+                    "taskPriority": "Baja",
+                    "creation": "agosto 17º 2023, 1:58:30 am",
+                    "updateDate": "agosto 20º 2023, 2:30:18 am"
                 }
             ]
         }

@@ -283,6 +283,102 @@ class AuthAPI {
                 });
             }
         );
+
+        UsersRoutes.get(
+            "/obtener-tareas",
+            CheckToken,
+            CheckRole,
+            (req, res) => {
+                const jsonContent = jsonFile;
+                const users = jsonContent.users;
+                const id = req.body.authenticatedId;
+
+                const user = users.filter((user) => user._id === id);
+                const tasksUser = user[0].tasks;
+                const nameUser = user[0].name;
+
+                res.status(200).json({
+                    status: "OK",
+                    code: 200,
+                    id,
+                    name: nameUser,
+                    tasks: tasksUser,
+                });
+            }
+        );
+
+        UsersRoutes.put(
+            "/actualizar-tarea",
+            CheckToken,
+            CheckRole,
+            (req, res) => {
+                const jsonContent = jsonFile;
+                const id = req.body.authenticatedId;
+                const users = jsonContent.users;
+                const index = users.findIndex((user) => user._id === id);
+                const taskId = req.body.taskId;
+
+                const foundUser = users[index];
+                const tasksUser = foundUser.tasks;
+                const taskIndex = tasksUser.findIndex(
+                    (task) => task.taskId === taskId
+                );
+                const foundTask = tasksUser[taskIndex];
+                const creation = foundTask.creation;
+                const { taskTitle, taskBody, taskPriority, taskStatus } =
+                    req.body;
+                const updateDate = moment.format("MMMM Do YYYY, h:mm:ss a");
+
+                const updatedTask = {
+                    taskId,
+                    taskTitle,
+                    taskBody,
+                    taskStatus,
+                    taskPriority,
+                    creation,
+                    updateDate,
+                };
+                tasksUser[taskIndex] = updatedTask;
+                WriteJSON(jsonContent, jsonRoute);
+                res.status(200).json({
+                    status: "OK",
+                    code: 200,
+                    updated_task: updatedTask,
+                });
+            }
+        );
+
+        UsersRoutes.delete(
+            "/eliminar-tarea/:id",
+            CheckToken,
+            CheckRole,
+            (req, res) => {
+                const id = req.body.authenticatedId;
+                const jsonContent = jsonFile;
+                const users = jsonContent.users;
+                const taskId = req.params.id;
+
+                const foundIndexUser = users.findIndex(
+                    (user) => user._id === id
+                );
+                const foundUser = users[foundIndexUser];
+
+                const tasks = foundUser.tasks;
+                const deletedTask = tasks.filter(
+                    (task) => task.taskId !== taskId
+                );
+
+                foundUser.tasks = [...deletedTask];
+
+                WriteJSON(jsonContent, jsonRoute);
+
+                res.status(200).json({
+                    status: "OK",
+                    code: 200,
+                    message: "Tarea eliminada exitosamente",
+                });
+            }
+        );
     }
 }
 
