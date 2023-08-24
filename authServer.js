@@ -5,8 +5,30 @@ const jwt = require("jsonwebtoken");
 const uuid = require("uuid");
 const dotenv = require("dotenv");
 const fs = require("fs");
+const path = require("path");
+const multer = require("multer");
 const moment = require("moment")();
-const { type } = require("os");
+const mimetypes = ["image/jpeg", "image/jpg", "image/png"];
+const upload = multer({
+    storage: multer.memoryStorage(),
+    fileFilter: (req, file, cb) => {
+        console.log(file.mimetype);
+        if (mimetypes.includes(file.mimetype)) {
+            cb(null, true);
+        } else {
+            cb(
+                new Error(
+                    `Solo archivos con mimetype tipo ${mimetypes.join(
+                        " "
+                    )} son aceptados.`
+                )
+            );
+        }
+    },
+    limits: { fieldSize: 10000000 },
+});
+const sharp = require("sharp");
+
 dotenv.config();
 const { PORT, ROUNDS, KEY } = process.env;
 class AuthAPI {
@@ -92,7 +114,6 @@ class AuthAPI {
     }
 
     CheckRole(req, res, next) {
-        console.log(req.body.role.toLowerCase());
         if (
             req.body.role.toLowerCase() !== "user" &&
             req.body.role.toLowerCase() !== "admin"
@@ -110,15 +131,23 @@ class AuthAPI {
 
     CheckToken(req, res, next) {
         try {
-            const token = req.headers.authorization.split(" ")[1];
-            const decoded = jwt.verify(token, KEY);
+            /*             let token;
+            let decoded; */
 
+            /*             if (req.headers["content-type"].includes("multipart/form-data")) {
+                console.log(req.body);
+                token = req.body.token.split(" ")[1];
+                decoded = jwt.verify(token, KEY);
+                req.body.authenticatedId = decoded.id;
+                req.body.role = decoded.role;
+            } else { */
+            const token = req.headers.token.split(" ")[1];
+            const decoded = jwt.verify(token, KEY);
             req.body.authenticatedId = decoded.id;
             req.body.role = decoded.role;
-
+            /*             } */
             next();
         } catch (error) {
-            console.log(error);
             return res.status(401).json({
                 status: "No autorizado",
                 code: 401,
@@ -259,6 +288,7 @@ class AuthAPI {
             CheckRole,
             CheckTask,
             jsonFile,
+            ReadJSON,
         } = this;
 
         UsersRoutes.post(
@@ -387,6 +417,59 @@ class AuthAPI {
                     status: "OK",
                     code: 200,
                     message: "Tarea eliminada exitosamente",
+                });
+            }
+        );
+
+        UsersRoutes.post(
+            "/subir-foto",
+            upload.single("imagen"),
+            async (req, res) => {
+                const file = req.file;
+                const image = file.buffer;
+
+                const processedImage = await sharp(image)
+                    .resize({
+                        width: 1920,
+                        height: 1080,
+                        fit: "inside",
+                    })
+                    .toBuffer();
+
+                const imageURL = path.join(
+                    __dirname,
+                    `public/images/${uuid.v1()}-optimazed-${file.originalname}`
+                );
+                fs.writeFileSync(imageURL, processedImage);
+
+                const jsonContent = ReadJSON(jsonRoute);
+                const users = jsonContent.users;
+                let token, decoded, id;
+                try {
+                    token = req.body.token.split(" ")[1];
+                    decoded = jwt.verify(token, KEY);
+                    id = decoded.id;
+                } catch (error) {
+                    return res.status(401).json({
+                        status: "No autorizado",
+                        code: 401,
+                        message: "El token no es valido o ha expirado",
+                        message: error,
+                    });
+                }
+                const indexUser = users.findIndex((user) => user._id === id);
+                const foundUser = users[indexUser];
+                console.log(foundUser);
+                users[indexUser].profile_pic = imageURL;
+
+                WriteJSON(jsonContent, jsonRoute);
+
+                res.status(200).json({
+                    status: "OK",
+                    code: 200,
+                    message: "Imagen subida correctamente",
+                    image_url: imageURL,
+                    account_id: id,
                 });
             }
         );

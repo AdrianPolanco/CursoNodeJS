@@ -29,7 +29,8 @@
             "future_couple": {
                 "id": "64d955196e5206586896c953",
                 "name": "Adrian Saul Polanco Ferrer"
-            }
+            },
+            "profile-pic": ""
         },
         {
             "_id": "244bc6c7-9974-4b26-9257-e763b4a753ec",
@@ -66,7 +67,8 @@
                     "creation": "agosto 17º 2023, 1:58:30 am",
                     "updateDate": "agosto 20º 2023, 2:30:18 am"
                 }
-            ]
+            ],
+            "profile_pic": "c:\\Users\\adfer\\Desktop\\NodeExpress\\public\\images\\e617f0b0-42b0-11ee-9077-6f5eae2e9b91-optimazed-beyondlight.jpg"
         }
     ]
 }
